@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "thArZqyEkg2AByx9/5XYcV018l0=",
+			"path": "github.com/gorilla/mux",
+			"revision": "ed099d42384823742bba0bf9a72b53b55c9e2e38",
+			"revisionTime": "2019-05-17T00:20:44Z"
+		},
+		{
+			"checksumSHA1": "LDaAViTTwgO9nRD0OCJ2y8uQ4o0=",
+			"path": "github.com/skip2/go-qrcode",
+			"revision": "7ac0b40b20381309a948070efde6bf158f0b75be",
+			"revisionTime": "2020-05-26T17:57:31Z"
+		},
+		{
+			"checksumSHA1": "xkuxp8PnGrQUsIXMiIOCk4U5IGw=",
+			"path": "github.com/skip2/go-qrcode/bitset",
+			"revision": "7ac0b40b20381309a948070efde6bf158f0b75be",
+			"revisionTime": "2020-05-26T17:57:31Z"
+		},
+		{
+			"checksumSHA1": "UtPg/z5chOpfiJvr29Or0oUx1Bs=",
+			"path": "github.com/skip2/go-qrcode/reedsolomon",
+			"revision": "7ac0b40b20381309a948070efde6bf158f0b75be",
+			"revisionTime": "2020-05-26T17:57:31Z"
+		}
+	],
+	"rootPath": "github.com/glennzw/kyouar"
+}
