@@ -4,6 +4,8 @@
 *
 *  <img src='https://kyouar.herokuapp.com/u/http://facebook.com'> <!-- QR code image to facebook.com -->
 *
+* Alternatively, calling /b/<url> will return a base64 encoded response, suitable for an img src tag.
+*
 * URL component can include http(s):// or just a domain.
 *
  */
@@ -11,6 +13,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net"
@@ -34,6 +37,8 @@ func buildQR(url string) ([]byte, error) {
 }
 
 func handleURL(w http.ResponseWriter, r *http.Request) {
+
+	mode := string(r.URL.String()[1]) // 'u' for an image, 'b' for base64
 
 	defer func() { // Handle panic.
 		if recover() != nil {
@@ -81,7 +86,17 @@ func handleURL(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte("Unable to create QR code"))
 	} else {
-		w.Write(imageBytes)
+		if mode == "u" { //image
+			w.Write(imageBytes)
+		} else if mode == "b" {
+			b64data := base64.StdEncoding.EncodeToString(imageBytes)
+			//b64html := "data:image/png;base64, " + b64data
+			w.Write([]byte("data:image/png;base64, " + b64data))
+		} else {
+			//Should be unreachable
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Invalid URL!"))
+		}
 	}
 }
 
@@ -102,6 +117,7 @@ func main() {
 	r.SkipClean(true) //Mux doesn't like double forward slashes
 	r.HandleFunc("/", landing).Methods("GET")
 	r.HandleFunc("/u/{url:[a-z,A-Z,0-9,\\-,_,\\/,\\.,:,\\/\\/]*}", handleURL).Methods("GET") //Mux doesn't like forward slashes
+	r.HandleFunc("/b/{url:[a-z,A-Z,0-9,\\-,_,\\/,\\.,:,\\/\\/]*}", handleURL).Methods("GET") //Same endpoint, but to return QR in a base64 HTML img form
 	r.NotFoundHandler = http.HandlerFunc(notFoundHandler)
 	http.ListenAndServe(":"+port, r)
 }
